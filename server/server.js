@@ -1,4 +1,4 @@
-// 入口文件
+// app 配置
 const express = require("express");
 // 实例化express
 const app = express();
@@ -9,9 +9,10 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 // 数据库连接
 require("./mongoConnect");
-
-// 服务器端口
-const port = 3344;
+// 导入token.js
+const vertoken = require("./utils/token/token");
+// 验证token是否过期
+const expressJwt = require("express-jwt");
 
 // 静态文件夹
 app.use("/static", express.static(path.join(__dirname, "public")));
@@ -42,13 +43,40 @@ app.all("*", (req, res, next) => {
 
 const userRoute = require("./routes/userRouter");
 
+// 验证token过期和白名单设置
+app.use(
+  expressJwt({
+    secret: vertoken.jwtScrect,
+    // 算法
+    algorithms: ["HS256"],
+  }).unless({
+    path: ["/pv1/user/api/loginIn", "/pv1/user/api/signUp"],
+  })
+);
+
+// 解析token获取用户信息
+app.use(function (req, res, next) {
+  let token = req.headers["authorization"];
+  if (token == undefined) {
+    next();
+  } else {
+    vertoken
+      .getToken(token)
+      .then((data) => {
+        req.data = data;
+        next();
+      })
+      .catch((err) => {
+        console.log(err);
+        next();
+      });
+  }
+});
+
+// 路由引入
 app.use("/pv1/user/api", userRoute);
 
 // 错误处理
-app.use(function (req, res, next) {
-  res.status(404).send("Sorry can't find that!");
-});
-
 app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     res.status(401).send({ code: -1, msg: "用户验证失败,请登录后重试" });
@@ -57,6 +85,5 @@ app.use(function (err, req, res, next) {
     res.status(500).send("出现了一个错误");
   }
 });
-app.listen(port, () => {
-  console.log(`server is running on port ${port}`);
-});
+
+module.exports = app;
