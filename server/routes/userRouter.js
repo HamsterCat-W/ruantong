@@ -10,7 +10,7 @@ userRoute
   .route("/user")
   .get(userController.getUser)
   .post(userController.createUser)
-  .put(userController.updateUserInfo)
+  .patch(userController.updateUserInfo)
   .delete(userController.deleteOneUser);
 
 //   根据传入的数据数组进行多个用户的查询和删除

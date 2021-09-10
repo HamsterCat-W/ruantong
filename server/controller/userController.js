@@ -5,7 +5,6 @@ const userModel = require("../models/userModel");
 const vertoken = require("../utils/token/token");
 // 加密算法
 const crypto = require("crypto");
-const { token } = require("morgan");
 
 // md5函数书写
 function md5(s) {
@@ -20,65 +19,56 @@ function savePassword(s) {
 
 // 创建用户
 const createUser = async (req, res) => {
-  console.log(req.data);
-  if (req.data.role === "superAdmin") {
-    let { email, password } = req.body;
-    if (
-      email == null ||
-      email.trim() === "" ||
-      password == null ||
-      password.trim() == null
-    ) {
+  // console.log(req.data);
+
+  let { email, password } = req.body;
+  if (
+    email == null ||
+    email.trim() === "" ||
+    password == null ||
+    password.trim() == null
+  ) {
+    res.send({
+      meta: {
+        status: "error",
+        code: 400,
+        msg: "邮箱或密码不能为空",
+      },
+    });
+  } else {
+    let data = await userModel.findOne({ email: email });
+    console.log(data);
+    if (data) {
       res.send({
         meta: {
-          status: "error",
-          code: 400,
-          msg: "邮箱或密码不能为空",
+          status: "fail",
+          code: 500,
+          msg: "您的账户已经注册过啦",
         },
       });
     } else {
-      let data = await userModel.findOne({ email: email });
-      console.log(data);
-      if (data) {
+      let result = await userModel.create(req.body);
+      if (result) {
+        console.log("-----------------创建了一个新用户");
+        // console.log(result);
+        res.send({
+          meta: {
+            status: "success",
+            code: 200,
+            msg: "用户创建成功",
+          },
+          data: result,
+        });
+      } else {
         res.send({
           meta: {
             status: "fail",
             code: 500,
-            msg: "您的账户已经注册过啦",
+            msg: "用户创建失败",
           },
         });
-      } else {
-        let result = await userModel.create(req.body);
-        if (result) {
-          console.log("-----------------创建了一个新用户");
-          // console.log(result);
-          res.send({
-            meta: {
-              status: "success",
-              code: 200,
-              msg: "用户创建成功",
-            },
-            data: result,
-          });
-        } else {
-          res.send({
-            meta: {
-              status: "fail",
-              code: 500,
-              msg: "用户创建失败",
-            },
-          });
-        }
       }
     }
-  } else {
-    res.send({
-      meta: {
-        status: "fail",
-        code: 400,
-        msg: "您的权限不足",
-      },
-    });
   }
 };
 
@@ -145,16 +135,112 @@ const getUser = async (req, res) => {
 };
 
 // 获取所有用户
-const getAllUser = async (req, res) => {};
+const getAllUser = async (req, res) => {
+  let data = await userModel.find();
+  console.log("查询了所有的用户-------->");
+  res.send({
+    meta: {
+      status: "success",
+      code: 200,
+      msg: "查询成功",
+    },
+    data: data,
+  });
+};
 
 // 修改用户信息
-const updateUserInfo = async (req, res) => {};
+const updateUserInfo = async (req, res) => {
+  let data = await userModel.updateOne(
+    { email: req.body.email },
+    { ...req.body }
+  );
+  // console.log(data);
+  if (data.modifiedCount == 1) {
+    console.log(`修改了用户${req.body.email}的信息----`);
+    console.log(`修改信息内容为`);
+    console.log(...req.body);
+
+    res.send({
+      meta: {
+        status: "success",
+        code: 200,
+        msg: "修改成功",
+      },
+      data: 1,
+    });
+  } else {
+    res.send({
+      meta: {
+        status: "fail",
+        code: 500,
+        msg: "修改失败",
+      },
+      data: 0,
+    });
+  }
+};
 
 // 删除用户
-const deleteOneUser = async (req, res) => {};
+const deleteOneUser = async (req, res) => {
+  let data = await userModel.findOneAndDelete({ email: req.body.email });
+  if (data) {
+    console.log(`删除了${req.body.email}----->:`);
+    console.log(data);
+    res.send({
+      meta: {
+        status: "success",
+        code: 200,
+        msg: "删除成功",
+      },
+      data: 1,
+    });
+  } else {
+    res.send({
+      meta: {
+        status: "fail",
+        code: 500,
+        msg: "删除失败",
+      },
+      data: 0,
+    });
+  }
+};
 
 // 删除多个用户
-const deleteManyUser = async (req, res) => {};
+const deleteManyUser = (req, res) => {
+  let { deleteList } = req.body;
+  try {
+    deleteList.forEach(async (element) => {
+      // element.email
+      let data = await userModel.findOneAndDelete({ email: element.email });
+      if (!data) {
+        throw `删除${element.email}时出现错误`;
+      } else {
+        console.log(`删除了${req.body.email}----->:`);
+        console.log(data);
+      }
+    });
+
+    res.send({
+      meta: {
+        status: "success",
+        code: 200,
+        msg: `一共删除了${deleteList.length}条数据`,
+      },
+      data: 1,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      meta: {
+        status: "fail",
+        code: 500,
+        msg: error,
+      },
+      data: 0,
+    });
+  }
+};
 
 // 登录
 const signIn = async (req, res) => {
@@ -174,6 +260,7 @@ const signIn = async (req, res) => {
           code: 200,
           msg: "登录成功",
         },
+        data: result,
         token: token,
       });
     } else {

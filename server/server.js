@@ -33,7 +33,10 @@ app.all("*", (req, res, next) => {
   // res.setHeader("Access-Control-Allow-Origin", req.get("Origin"));
   res.setHeader("Access-Control-Allow-Origin", "*");
   // 允许跨域的方法
-  res.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,OPTIONS,DELETE");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST,GET,PUT,OPTIONS,DELETE,PATCH"
+  );
 
   res.header("Access-Control-Allow-Headers", "*");
   res.header("Content-Type", "application/json;charset=utf-8");
@@ -63,6 +66,7 @@ app.use(function (req, res, next) {
     vertoken
       .getToken(token)
       .then((data) => {
+        // 请求头存放token解析的数据
         req.data = data;
         next();
       })
