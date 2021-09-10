@@ -1,3 +1,4 @@
+// 用户层controller
 const userModel = require("../models/userModel");
 const crypto = require("crypto");
 
@@ -28,40 +29,42 @@ const createUser = async (req, res) => {
         msg: "邮箱或密码不能为空",
       },
     });
-  }
-
-  let data = await userModel.findOne({ email: email });
-  if (data) {
-    res.send({
-      meta: {
-        status: "fail",
-        code: 500,
-        msg: "您的账户已经注册过啦",
-      },
-    });
-  }
-
-  let result = await userModel.create(req.body);
-  if (result) {
-    console.log("-----------------创建了一个新用户");
-    console.log(result);
-
-    res.send({
-      meta: {
-        status: "success",
-        code: 200,
-        msg: "用户创建成功",
-      },
-      data: result,
-    });
   } else {
-    res.send({
-      meta: {
-        status: "fail",
-        code: 500,
-        msg: "用户创建失败",
-      },
-    });
+    let data = await userModel.findOne({ email: email });
+    console.log(data);
+    if (data) {
+      res.send({
+        meta: {
+          status: "fail",
+          code: 500,
+          msg: "您的账户已经注册过啦",
+        },
+      });
+    } else {
+      console.log("*******");
+      let result = await userModel.create(req.body);
+      if (result) {
+        console.log("-----------------创建了一个新用户");
+        console.log(result);
+
+        res.send({
+          meta: {
+            status: "success",
+            code: 200,
+            msg: "用户创建成功",
+          },
+          data: result,
+        });
+      } else {
+        res.send({
+          meta: {
+            status: "fail",
+            code: 500,
+            msg: "用户创建失败",
+          },
+        });
+      }
+    }
   }
 };
 
@@ -90,7 +93,11 @@ const initSuperAdmin = async (req, res) => {
 };
 
 // 获取一个用户
-const getUser = async (req, res) => {};
+const getUser = async (req, res) => {
+  let { email } = req.query;
+  let data = await userModel.findOne({ email: email });
+  console.log(data);
+};
 
 // 获取所有用户
 const getAllUser = async (req, res) => {};
@@ -113,4 +120,11 @@ const signUp = async (req, res) => {};
 module.exports = {
   createUser,
   initSuperAdmin,
+  getUser,
+  getAllUser,
+  updateUserInfo,
+  deleteOneUser,
+  deleteManyUser,
+  signIn,
+  signUp,
 };
