@@ -157,8 +157,6 @@ const updateUserInfo = async (req, res) => {
   // console.log(data);
   if (data.modifiedCount == 1) {
     console.log(`修改了用户${req.body.email}的信息----`);
-    console.log(`修改信息内容为`);
-    console.log(...req.body);
 
     res.send({
       meta: {
