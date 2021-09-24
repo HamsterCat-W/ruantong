@@ -1,5 +1,5 @@
 // // 入口文件
-const app = require("./server");
+const app = require("./app");
 
 // 服务器端口
 const port = 3344;
