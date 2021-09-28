@@ -6,15 +6,24 @@ const userSchema = new mongose.Schema({
     default: mongose.Types.ObjectId,
   },
   //   邮箱
-  email: String,
+  email: {
+    type: String,
+    required: true,
+  },
   //   密码
-  password: String,
+  password: {
+    type: String,
+    required: true,
+  },
   //   电话
-  phone: String,
+  phone: {
+    type: String,
+    required: true,
+  },
   //   身份
   role: {
     type: String,
-    enum: ["superAdmin", "admin", "customer"],
+    enum: ["superAdmin", "admin", "customer", "vip"],
     default: "customer",
   },
   //   头像
@@ -41,7 +50,7 @@ const userModel = mongose.model("users", userSchema);
 // 创建数据表
 userModel.createCollection().then(function (collection) {
   // console.log(collection);
-  console.log("Collection is created!");
+  console.log(" user Collection is created!");
 });
 
 module.exports = userModel;

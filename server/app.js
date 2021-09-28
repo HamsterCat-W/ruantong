@@ -44,8 +44,6 @@ app.all("*", (req, res, next) => {
   next();
 });
 
-const userRoute = require("./routes/userRouter");
-
 // 验证token过期和白名单设置
 app.use(
   expressJwt({
@@ -78,7 +76,15 @@ app.use(function (req, res, next) {
 });
 
 // 路由引入
+const userRoute = require("./routes/userRouter");
+const goodsRoute = require("./routes/goodsRouter");
+const goodsCarRoute = require("./routes/goodsCarRouter");
+const orderRoute = require("./routes/orderRouter");
+
 app.use("/pv1/user/api", userRoute);
+app.use("/pv1/goods/api", goodsRoute);
+app.use("/pv1/goodscar/api", goodsCarRoute);
+app.use("/pv1/order/api", orderRoute);
 
 // 错误处理
 app.use(function (err, req, res, next) {

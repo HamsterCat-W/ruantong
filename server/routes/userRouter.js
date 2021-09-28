@@ -1,7 +1,6 @@
 // 用户路由
 const userController = require("../controller/userController");
 const express = require("express");
-const { updateOne } = require("../models/userModel");
 
 const userRoute = express.Router();
 
