@@ -8,7 +8,11 @@ goodsCarRoute
   .route("/car")
   .get(goodscarController.getAllCarByUserId)
   .post(goodscarController.createCar)
-  .patch(goodscarController.updateCar)
+  .patch(goodscarController.updateCar);
+
+goodsCarRoute
+  .route("/cars")
+  .get(goodscarController.findAllCar)
   .delete(goodscarController.deleteCar);
 
 module.exports = goodsCarRoute;

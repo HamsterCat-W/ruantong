@@ -13,13 +13,13 @@ const goodsCarSchema = new mongose.Schema({
   },
 
   goodsId: {
-    type: mongose.Schema.Types.ObjectId,
+    type: String,
     ref: "goods",
     required: true,
   },
 
   userId: {
-    type: mongose.Schema.Types.ObjectId,
+    type: String,
     ref: "users",
     required: true,
   },

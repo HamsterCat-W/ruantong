@@ -5,7 +5,7 @@ const orderSchema = new mongose.Schema({
     type: String,
     default: mongose.Types.ObjectId,
   },
-  originPlace: {
+  sourcePlace: {
     type: String,
     required: true,
   },
@@ -15,13 +15,13 @@ const orderSchema = new mongose.Schema({
   },
 
   userId: {
-    type: mongose.Schema.Types.ObjectId,
+    type: String,
     ref: "users",
     required: true,
   },
 
   goodsId: {
-    type: mongose.Schema.Types.ObjectId,
+    type: String,
     ref: "goods",
     required: true,
   },
