@@ -6,9 +6,11 @@ const orderRoute = express.Router();
 
 orderRoute
   .route("/order")
-  .get(orderController.getOrder)
+  .get(orderController.getOrders)
   .post(orderController.createOrder)
   .patch(orderController.updateOrder)
   .delete(orderController.deleteOrder);
+
+orderRoute.route("/ordlist").get(orderController.getOrderList);
 
 module.exports = orderRoute;

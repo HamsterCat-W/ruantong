@@ -15,6 +15,12 @@ const goodSchema = new mongose.Schema({
     type: Number,
     required: true,
   },
+  // 需求数量
+  need_num: {
+    type: Number,
+    default: 1,
+  },
+
   //   库存
   repertory: {
     type: Number,

@@ -23,7 +23,7 @@ const userSchema = new mongose.Schema({
   //   身份
   role: {
     type: String,
-    enum: ["superAdmin", "admin", "customer", "vip"],
+    enum: ["superAdmin", "merchant", "customer", "vip"],
     default: "customer",
   },
   //   头像

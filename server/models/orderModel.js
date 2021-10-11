@@ -20,9 +20,21 @@ const orderSchema = new mongose.Schema({
     required: true,
   },
 
+  merchantId: {
+    type: String,
+    ref: "users",
+    required: true,
+  },
+
   goodsId: {
     type: String,
     ref: "goods",
+    required: true,
+  },
+
+  goodsCarId: {
+    type: String,
+    ref: "goodsCar",
     required: true,
   },
 });
