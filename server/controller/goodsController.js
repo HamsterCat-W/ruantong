@@ -100,14 +100,25 @@ const updateGoods = async (req, res) => {
   }
 };
 
-const deleteGoods = (req, res) => {
+const deleteGoods = async (req, res) => {
   let { goodsList } = req.body;
-  try {
-    goodsList.forEach(async (item) => {
-      let data = await goodsModel.findOneAndDelete({ goodsId: item });
+
+  let flag;
+  for (let i = 0; i < goodsList.length; i++) {
+    let data = await goodsModel.findOneAndDelete({
+      goodsId: goodsList[i],
+    });
+    if (data !== null) {
       console.log("删除了一条数据");
       console.log(data);
-    });
+      flag = 1;
+    } else {
+      console.log(`删除goodsId: ${goodsList[i]} 失败`);
+      flag = 0;
+    }
+  }
+
+  if (flag) {
     res.send({
       meta: {
         status: "success",
@@ -116,13 +127,12 @@ const deleteGoods = (req, res) => {
       },
       data: 1,
     });
-  } catch (error) {
-    console.log(error);
+  } else {
     res.send({
       meta: {
         status: "error",
         code: 500,
-        msg: "删除失败",
+        msg: "删除失败,商品不存在",
       },
       data: 0,
     });

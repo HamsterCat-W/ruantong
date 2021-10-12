@@ -205,20 +205,24 @@ const deleteOneUser = async (req, res) => {
 };
 
 // 删除多个用户
-const deleteManyUser = (req, res) => {
+const deleteManyUser = async (req, res) => {
   let { deleteList } = req.body;
-  try {
-    deleteList.forEach(async (element) => {
-      // element.email
-      let data = await userModel.findOneAndDelete({ email: element.email });
-      if (!data) {
-        throw `删除${element.email}时出现错误`;
-      } else {
-        console.log(`删除了${req.body.email}----->:`);
-        console.log(data);
-      }
-    });
+  let flag;
 
+  for (let i = 0; i < deleteList.length; i++) {
+    let data = await userModel.findOneAndDelete({ email: deleteList[i] });
+    // console.log(data);
+    if (data !== null) {
+      console.log("删除了一条数据");
+      console.log(data);
+      flag = 1;
+    } else {
+      console.log(`删除email: ${deleteList[i]} 失败`);
+      flag = 0;
+    }
+  }
+
+  if (flag) {
     res.send({
       meta: {
         status: "success",
@@ -227,13 +231,12 @@ const deleteManyUser = (req, res) => {
       },
       data: 1,
     });
-  } catch (error) {
-    console.log(error);
+  } else {
     res.send({
       meta: {
-        status: "fail",
+        status: "error",
         code: 500,
-        msg: error,
+        msg: "删除失败,用户不存在",
       },
       data: 0,
     });

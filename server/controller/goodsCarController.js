@@ -45,10 +45,14 @@ const getAllCarByUserId = async (req, res) => {
     {
       $match: { userId: req.query.userId },
     },
+
+    {
+      $project: { _id: 0, goodsCarId: 1, num: 1, user: 1, goods: 1 },
+    },
   ]);
 
   if (data) {
-    console.log("查询所有订单");
+    console.log("查询所有购物车");
     res.send({
       meta: {
         status: "success",
@@ -140,30 +144,42 @@ const updateCar = async (req, res) => {
 const deleteCar = async (req, res) => {
   let { goodsCarList } = req.body;
 
-  goodsCarList.forEach(async (item) => {
-    let data = await goodsCarModel.findOneAndDelete({ goodsCarId: item });
-    console.log("删除了一条数据");
-    console.log(data);
+  let flag;
+  for (let i = 0; i < goodsCarList.length; i++) {
+    let data = await goodsCarModel.findOneAndDelete({
+      goodsCarId: goodsCarList[i],
+    });
     if (data !== null) {
-      res.send({
-        meta: {
-          status: "success",
-          code: 200,
-          msg: "删除成功",
-        },
-        data: 1,
-      });
+      console.log("删除了一条数据");
+      console.log(data);
+      flag = 1;
     } else {
-      res.send({
-        meta: {
-          status: "error",
-          code: 500,
-          msg: "删除失败,购物车不存在",
-        },
-        data: 0,
-      });
+      console.log(`删除goodsCarId: ${goodsCarList[i]} 失败`);
+      flag = 0;
     }
-  });
+  }
+
+  // console.log(flag);
+
+  if (flag) {
+    res.send({
+      meta: {
+        status: "success",
+        code: 200,
+        msg: `删除成功,一共删除了${goodsCarList.length}条数据`,
+      },
+      data: 1,
+    });
+  } else {
+    res.send({
+      meta: {
+        status: "error",
+        code: 500,
+        msg: "删除失败,购物车不存在",
+      },
+      data: 0,
+    });
+  }
 };
 
 module.exports = {
