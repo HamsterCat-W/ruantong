@@ -6,6 +6,12 @@ const goodsCarSchema = new mongose.Schema({
     default: mongose.Types.ObjectId,
   },
 
+  // 需求数量
+  num: {
+    type: Number,
+    default: 1,
+  },
+
   goodsId: {
     type: String,
     ref: "goods",
@@ -15,11 +21,6 @@ const goodsCarSchema = new mongose.Schema({
   userId: {
     type: String,
     ref: "users",
-    required: true,
-  },
-
-  totalPrice: {
-    type: String,
     required: true,
   },
 });
