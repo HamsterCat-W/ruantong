@@ -14,7 +14,12 @@ const orderSchema = new mongose.Schema({
     required: true,
   },
 
-  userId: {
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
+
+  customerId: {
     type: String,
     ref: "users",
     required: true,
