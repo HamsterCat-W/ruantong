@@ -6,7 +6,7 @@ const orderRoute = express.Router();
 
 orderRoute
   .route("/order")
-  .get(orderController.getOrders)
+  .get(orderController.getOrderById)
   .post(orderController.createOrder)
   .patch(orderController.updateOrder)
   .delete(orderController.deleteOrder);
