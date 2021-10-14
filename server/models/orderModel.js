@@ -16,7 +16,6 @@ const orderSchema = new mongose.Schema({
 
   totalPrice: {
     type: Number,
-    required: true,
   },
 
   customerId: {
