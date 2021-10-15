@@ -78,16 +78,17 @@ export default {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           // alert("submit!");
-          let res = await this.$request.post("/login", {
+          let res = await this.$request.post("/pv1/user/api/loginIn", {
             email: this.loginForm.email,
             password: this.loginForm.password,
           });
-          // console.log(res);
-          let { msg, token } = res.data.meta;
 
-          if (msg === "success") {
-            sessionStorage.setItem("token", token);
+          let { status } = res.data.meta;
+
+          if (status === "success") {
+            sessionStorage.setItem("token", res.data.token);
             this.$axiosInstance.setToken();
+            this.$router.push({ name: "IndexBody" });
           }
         } else {
           console.log("error submit!!");
