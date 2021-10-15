@@ -1,14 +1,16 @@
 <template>
   <div class="bodyer">
     <el-row>
-      <el-col :span="5" :push="1" v-for="i in 8" :key="i">
+      <el-col
+        :span="5"
+        :push="1"
+        v-for="(item, index) in dataList"
+        :key="index"
+      >
         <el-card shadow="hover" :body-style="{ padding: '0px' }">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="goods-image"
-          />
+          <img :src="item.imgSrc" class="goods-image" />
           <div class="decration">
-            <div>汉堡</div>
+            <div>{{ item.goodsName }}</div>
             <el-button type="text" class="button">详情</el-button>
           </div>
         </el-card>
@@ -18,7 +20,29 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      dataList: [],
+    };
+  },
+  mounted() {
+    this.getAllGoods();
+  },
+
+  methods: {
+    async getAllGoods() {
+      let data = await this.$request("/pv1/goods/api/goodslist", {
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      });
+      console.log(data);
+
+      this.dataList = data.data.data;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -28,6 +52,7 @@ export default {};
 
 .goods-image {
   width: 100%;
+  height: 300px;
   display: block;
 }
 
