@@ -9,7 +9,7 @@ import "nprogress/nprogress.css";
 const request = axios.create({
   // 请求的初始路径
   // baseURL: "http://localhost:8888",
-  baseURL: "http://47.101.54.223:3000",
+  baseURL: "http://47.101.54.223:3344",
   timeout: 5000,
   // headers: {
   //   Authorization: token,
