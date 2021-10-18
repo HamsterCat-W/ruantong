@@ -23,6 +23,7 @@ const orderSchema = new mongose.Schema({
     ref: "users",
     required: true,
   },
+  num: { type: Number },
 
   merchantId: {
     type: String,

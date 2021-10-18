@@ -114,12 +114,12 @@ const getOrderById = async (req, res) => {
         sourcePlace: 1,
         destPlace: 1,
         totalPrice: 1,
+        num: 1,
         customer: "$customer.email",
         merchant: "$merchant.email",
         goodsName: "$goods.goodsName",
         goodsimgSrc: "$goods.imgSrc",
         goodsdescription: "$goods.description",
-        goodsNum: "goodsCar.num",
       },
     },
   ]);
@@ -194,7 +194,7 @@ const getOrderList = async (req, res) => {
         goodsName: "$goods.goodsName",
         goodsimgSrc: "$goods.imgSrc",
         goodsdescription: "$goods.description",
-        goodsNum: "goodsCar.num",
+        goodsNum: "$goodsCar.num",
       },
     },
   ]);
