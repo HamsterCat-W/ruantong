@@ -2,7 +2,7 @@
   <div class="index-container">
     <div class="header">
       <div class="logo">
-        <img src="../../assets/logo.jpg" alt="" srcset="" class="logo-img" />
+        <img src="../../assets/logo.png" alt="" srcset="" class="logo-img" />
       </div>
 
       <img :src="headImg" alt="" srcset="" class="user" @click="choose" />
@@ -97,8 +97,10 @@ export default {
 }
 
 .logo-img {
+  margin-top: 10px;
   width: 120px;
-  height: 60px;
+  height: 110px;
+  border-radius: 50%;
 }
 
 .user {
