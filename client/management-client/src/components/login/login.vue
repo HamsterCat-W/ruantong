@@ -35,7 +35,7 @@
             ></el-col
           >
           <el-col :span="8"
-            ><el-button @click="signUp('loginForm')">注册</el-button></el-col
+            ><el-button v-on:click="signUp">注册</el-button></el-col
           >
         </el-row>
       </el-form-item>
@@ -98,8 +98,8 @@ export default {
         }
       });
     },
-    signUp(formName) {
-      this.$refs[formName].resetFields();
+    signUp() {
+      this.$router.push("./signUp");
     },
   },
 };
