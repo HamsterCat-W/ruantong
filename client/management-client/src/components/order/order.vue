@@ -10,6 +10,9 @@
         <el-descriptions-item label="用户邮箱">{{
           item.customer[0]
         }}</el-descriptions-item>
+        <el-descriptions-item label="总价"
+          >{{ item.totalPrice }} 元</el-descriptions-item
+        >
         <el-descriptions-item label="商家邮箱">{{
           item.merchant[0]
         }}</el-descriptions-item>
@@ -17,7 +20,7 @@
           item.goodsName[0]
         }}</el-descriptions-item>
         <el-descriptions-item label="商品数量">{{
-          item.goodsNum
+          item.num
         }}</el-descriptions-item>
         <el-descriptions-item label="出发地" :span="2">{{
           item.sourcePlace
@@ -26,9 +29,6 @@
           item.destPlace
         }}</el-descriptions-item>
       </el-descriptions>
-      <el-descriptions-item label="总价">{{
-        item.totalPrice
-      }}</el-descriptions-item>
     </div>
   </div>
 </template>
@@ -47,13 +47,13 @@ export default {
   methods: {
     async getOrder() {
       this.$axiosInstance.setToken();
-      let res = await this.$request("/pv1/order/api/order", {
+      let res = await this.$request.get("/pv1/order/api/order", {
         params: {
           customerId: sessionStorage.getItem("userId"),
         },
       });
 
-      // console.log(res.data.data);
+      console.log(res.data.data);
       this.orderList = res.data.data;
     },
   },
