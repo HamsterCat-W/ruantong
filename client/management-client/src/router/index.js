@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const LoginRouter = () => import("@/components/login/login.vue");
+const SignUpRouter = () => import("@/components/signUp/signUp.vue");
 const IndexPageRouter = () => import("@/components/index/index.vue");
 const IndexBody = () => import("@/components/index/indexBody.vue");
 const GoodsDetailRouter = () => import("@/components/details/details.vue");
@@ -16,6 +17,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: LoginRouter,
+  },
+  {
+    path: "/signUp",
+    name: "SignUp",
+    component: SignUpRouter,
   },
   {
     path: "/index",
