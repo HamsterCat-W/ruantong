@@ -87,6 +87,8 @@ export default {
 
           if (status === "success") {
             sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("userId", res.data.data.userId);
+            sessionStorage.setItem("headImg", res.data.data.headPic);
             this.$axiosInstance.setToken();
             this.$router.push({ name: "IndexBody" });
           }
