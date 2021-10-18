@@ -11,7 +11,12 @@
           <img :src="item.imgSrc" class="goods-image" />
           <div class="decration">
             <div>{{ item.goodsName }}</div>
-            <el-button type="text" class="button">详情</el-button>
+            <el-button
+              type="text"
+              class="button"
+              @click="showDetail(item.goodsId)"
+              >详情</el-button
+            >
           </div>
         </el-card>
       </el-col>
@@ -32,14 +37,20 @@ export default {
 
   methods: {
     async getAllGoods() {
-      let data = await this.$request("/pv1/goods/api/goodslist", {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
+      this.$axiosInstance.setToken();
+      let data = await this.$request.get("/pv1/goods/api/goodslist");
+      // console.log(data);
+      this.dataList = data.data.data;
+    },
+
+    showDetail(value) {
+      // console.log(value);
+      this.$router.push({
+        name: "GoodsDetail",
+        params: {
+          goodsId: value,
         },
       });
-      console.log(data);
-
-      this.dataList = data.data.data;
     },
   },
 };
