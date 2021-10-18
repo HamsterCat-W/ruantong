@@ -7,6 +7,9 @@ const LoginRouter = () => import("@/components/login/login.vue");
 const IndexPageRouter = () => import("@/components/index/index.vue");
 const IndexBody = () => import("@/components/index/indexBody.vue");
 const GoodsDetailRouter = () => import("@/components/details/details.vue");
+const OrderRouter = () => import("@/components/order/order.vue");
+const MessageRoute = () => import("@/components/message/message.vue");
+const GoodsCarRoute = () => import("@/components/goodsCar/goodsCar.vue");
 
 const routes = [
   {
@@ -27,8 +30,23 @@ const routes = [
       },
       {
         path: "details/:goodsId",
-        name: "Index",
+        name: "GoodsDetail",
         component: GoodsDetailRouter,
+      },
+      {
+        path: "orders",
+        name: "Order",
+        component: OrderRouter,
+      },
+      {
+        path: "msg",
+        name: "Message",
+        component: MessageRoute,
+      },
+      {
+        path: "gsc",
+        name: "GoodsCar",
+        component: GoodsCarRoute,
       },
     ],
   },
